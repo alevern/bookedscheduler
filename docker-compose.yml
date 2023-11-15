@@ -27,29 +27,11 @@ services:
   
   bwebserver:
     image: nginx
-      #    ports:
-      #     - "8081:80"
     depends_on:
       - "mariadb"
       - "php"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.bwebserver.rule=Host(`booked.localhost`)"
-      - "traefik.http.routers.bwebserver.entrypoints=web"
-    volumes:
-      - ./www:/var/www/
-      # - /home/avernotte/Repositories/gravity/gravity-data-collector/dist-sandbox:/home/avernotte/Docker/femto_bookedscheduler/www/Web/scripts/js/gravity/
-      - ./sites:/etc/nginx/conf.d
-
-  traefik:
-    image: traefik:v2.9
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
     ports:
       - 80:80
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./www:/var/www/
+      - ./sites:/etc/nginx/conf.d
